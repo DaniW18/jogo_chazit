@@ -3,20 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jogo Chazit</title>
+  <title>Jogo Chazit!</title>
   <style>
     body { margin: 0; display: flex; height: 100vh; justify-content: center; align-items: center; background: #000; }
     canvas { background: #b8ccf5; display: block; }
   </style>
 </head>
 <body>
-  <canvas id="game" width="800" height="500"></canvas>
+  <canvas id="game" width="1200" height="750"></canvas>
   <script>
     const canvas = document.getElementById('game');
     const ctx = canvas.getContext('2d');
 
     // Configurações
-    const paddleWidth = 20;
+    const paddleWidth = 28;
     const paddleHeight = 100;
     const speedPaddle = 6;
     let upPressed = false;
