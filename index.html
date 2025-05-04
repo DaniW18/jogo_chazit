@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jogo Chazit</title>
+  <title>Jogo Chazit!</title>
   <style>
     body { margin: 0; display: flex; height: 100vh; justify-content: center; align-items: center; background: #000; }
     canvas { background: #b8ccf5; display: block; }
@@ -78,7 +78,8 @@
 
     function draw() {
       // Fundo
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = '#b8ccf5'; // mesma cor do CSS
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Paletas
       ctx.drawImage(leftPaddleImg, paddleLeft.x, paddleLeft.y, paddleWidth, paddleHeight);
