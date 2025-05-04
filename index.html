@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jogo Chazit</title>
+  <style>
+    body { margin: 0; display: flex; height: 100vh; justify-content: center; align-items: center; background: #000; }
+    canvas { background: #111; display: block; }
+  </style>
+</head>
+<body>
+  <canvas id="game" width="800" height="500"></canvas>
+  <script>
+    const canvas = document.getElementById('game');
+    const ctx = canvas.getContext('2d');
+
+    // Configurações
+    const paddleWidth = 20;
+    const paddleHeight = 100;
+    const speedPaddle = 6;
+    let upPressed = false;
+    let downPressed = false;
+
+    // Imagens personalizadas (substitua URLs pelos seus arquivos)
+    const leftPaddleImg = new Image(); leftPaddleImg.src = 'left_paddle.png';
+    const rightPaddleImg = new Image(); rightPaddleImg.src = 'right_paddle.png';
+    const ballFrames = [
+      'ball1.jpg',
+      'ball2.jpg',
+      'ball3.jpg',
+      'ball4.jpg'
+    ].map(src => { const img = new Image(); img.src = src; return img; });
+
+    // Estado do jogo
+    const paddleLeft = { x: 10, y: canvas.height/2 - paddleHeight/2 };
+    const paddleRight = { x: canvas.width - paddleWidth - 10, y: canvas.height/2 - paddleHeight/2 };
+    const ball = {
+      x: canvas.width/2,
+      y: canvas.height/2,
+      vx: 5,
+      vy: 3,
+      size: 20,
+      frameIndex: 0
+    };
+
+    // Teclado
+    document.addEventListener('keydown', e => {
+      if (e.code === 'ArrowUp') upPressed = true;
+      if (e.code === 'ArrowDown') downPressed = true;
+    });
+    document.addEventListener('keyup', e => {
+      if (e.code === 'ArrowUp') upPressed = false;
+      if (e.code === 'ArrowDown') downPressed = false;
+    });
+
+    function draw() {
+      // Fundo
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      // Paletas
+      ctx.drawImage(leftPaddleImg, paddleLeft.x, paddleLeft.y, paddleWidth, paddleHeight);
+      ctx.drawImage(rightPaddleImg, paddleRight.x, paddleRight.y, paddleWidth, paddleHeight);
+
+      // Bola (frame atual)
+      const frame = ballFrames[ball.frameIndex];
+      ctx.drawImage(frame, ball.x - ball.size/2, ball.y - ball.size/2, ball.size, ball.size);
+    }
+
+    function update() {
+      // Movimento paletas
+      if (upPressed && paddleRight.y > 0) paddleRight.y -= speedPaddle;
+      if (downPressed && paddleRight.y < canvas.height - paddleHeight) paddleRight.y += speedPaddle;
+      // IA simples paleta esquerda
+      if (ball.y < paddleLeft.y + paddleHeight/2 && paddleLeft.y > 0) paddleLeft.y -= speedPaddle * 0.6;
+      if (ball.y > paddleLeft.y + paddleHeight/2 && paddleLeft.y < canvas.height - paddleHeight) paddleLeft.y += speedPaddle * 0.6;
+
+      // Movimento bola
+      ball.x += ball.vx;
+      ball.y += ball.vy;
+
+      // Colisão superior/inferior
+      if (ball.y - ball.size/2 < 0 || ball.y + ball.size/2 > canvas.height) {
+        ball.vy *= -1;
+        changeBallFrame();
+      }
+
+      // Colisão com paletas
+      if (ball.x - ball.size/2 < paddleLeft.x + paddleWidth && ball.y > paddleLeft.y && ball.y < paddleLeft.y + paddleHeight) {
+        ball.vx *= -1;
+        changeBallFrame();
+      }
+      if (ball.x + ball.size/2 > paddleRight.x && ball.y > paddleRight.y && ball.y < paddleRight.y + paddleHeight) {
+        ball.vx *= -1;
+        changeBallFrame();
+      }
+
+      // Pontuação simples (restart)
+      if (ball.x < 0 || ball.x > canvas.width) resetBall();
+    }
+
+    function changeBallFrame() {
+      ball.frameIndex = (ball.frameIndex + 1) % ballFrames.length;
+    }
+
+    function resetBall() {
+      ball.x = canvas.width/2;
+      ball.y = canvas.height/2;
+      // direções aleatórias
+      ball.vx = (Math.random() > 0.5 ? 1 : -1) * 5;
+      ball.vy = (Math.random() > 0.5 ? 1 : -1) * 3;
+      ball.frameIndex = 0;
+    }
+
+    function loop() {
+      update();
+      draw();
+      requestAnimationFrame(loop);
+    }
+
+    // Começa o jogo após carregarem as imagens
+    Promise.all([
+      new Promise(r => leftPaddleImg.onload = r),
+      new Promise(r => rightPaddleImg.onload = r),
+      ...ballFrames.map(img => new Promise(r => img.onload = r))
+    ]).then(loop);
+  </script>
+</body>
+</html>
