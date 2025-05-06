@@ -108,8 +108,8 @@
       if (ball.y > paddleLeft.y + paddleHeight/2 && paddleLeft.y < canvas.height - paddleHeight) paddleLeft.y += speedPaddle * (0.1 + (0.05*scoreRight));
 
       // Movimento bola
-      ball.x += (ball.vx + scoreRight);
-      ball.y += ball.vy;
+      ball.x += (ball.vx + 2 * scoreRight);
+      ball.y += (ball.vy + 2 * scoreRight);
 
       // Colisão superior/inferior
       if (ball.y - ball.size/2 < 0 || ball.y + ball.size/2 > canvas.height) {
