@@ -75,7 +75,10 @@
       if (e.code === 'ArrowUp') upPressed = false;
       if (e.code === 'ArrowDown') downPressed = false;
     });
-
+    
+    let scoreLeft = 0;
+    let scoreRight = 0;
+  
     function draw() {
       // Fundo
       ctx.fillStyle = '#b8ccf5'; // mesma cor do CSS
@@ -88,6 +91,12 @@
       // Bola (frame atual)
       const frame = ballFrames[ball.frameIndex];
       ctx.drawImage(frame, ball.x - ball.size/2, ball.y - ball.size/2, ball.size, ball.size);
+      ctx.fillStyle = "black";
+      ctx.font = "48px Arial";
+      ctx.textAlign = "center";
+      ctx.fillText(scoreLeft, canvas.width / 4, 50);
+      ctx.fillText(scoreRight, 3 * canvas.width / 4, 50);
+
     }
 
     function update() {
@@ -119,7 +128,14 @@
       }
 
       // Pontuação simples (restart)
-      if (ball.x < 0 || ball.x > canvas.width) resetBall();
+          if (ball.x < 0) {
+      scoreRight++;
+      resetBall();
+      }  
+          if (ball.x > canvas.width) {
+        scoreLeft++;
+        resetBall();
+      }
     }
 
     function changeBallFrame() {
