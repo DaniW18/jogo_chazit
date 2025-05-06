@@ -104,8 +104,8 @@
       if (upPressed && paddleRight.y > 0) paddleRight.y -= speedPaddle;
       if (downPressed && paddleRight.y < canvas.height - paddleHeight) paddleRight.y += speedPaddle;
       // IA simples paleta esquerda
-      if (ball.y < paddleLeft.y + paddleHeight/2 && paddleLeft.y > 0) paddleLeft.y -= speedPaddle * 0.4;
-      if (ball.y > paddleLeft.y + paddleHeight/2 && paddleLeft.y < canvas.height - paddleHeight) paddleLeft.y += speedPaddle * 0.4;
+      if (ball.y < paddleLeft.y + paddleHeight/2 && paddleLeft.y > 0) paddleLeft.y -= speedPaddle * (0.4+ 0,1*scoreRight);
+      if (ball.y > paddleLeft.y + paddleHeight/2 && paddleLeft.y < canvas.height - paddleHeight) paddleLeft.y += speedPaddle * (0.4+ 0,1*scoreRight);
 
       // Movimento bola
       ball.x += ball.vx;
