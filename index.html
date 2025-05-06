@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Jogo Chazit!</title>
+  <title>Jogo Chazit</title>
   <style>
     body { margin: 0; display: flex; height: 100vh; justify-content: center; align-items: center; background: #000; }
     canvas { background: #b8ccf5; display: block; }
@@ -18,7 +18,7 @@
     // Configurações
     const paddleWidth = 28;
     const paddleHeight = 100;
-    const speedPaddle = 6;
+    const speedPaddle = 8;
     let upPressed = false;
     let downPressed = false;
 
@@ -104,8 +104,8 @@
       if (upPressed && paddleRight.y > 0) paddleRight.y -= speedPaddle;
       if (downPressed && paddleRight.y < canvas.height - paddleHeight) paddleRight.y += speedPaddle;
       // IA simples paleta esquerda
-      if (ball.y < paddleLeft.y + paddleHeight/2 && paddleLeft.y > 0) paddleLeft.y -= speedPaddle * (0.4+ (0,1*scoreRight));
-      if (ball.y > paddleLeft.y + paddleHeight/2 && paddleLeft.y < canvas.height - paddleHeight) paddleLeft.y += speedPaddle * (0.4+ (0,1*scoreRight));
+      if (ball.y < paddleLeft.y + paddleHeight/2 && paddleLeft.y > 0) paddleLeft.y -= speedPaddle * (0.2 + (0.1*scoreRight));
+      if (ball.y > paddleLeft.y + paddleHeight/2 && paddleLeft.y < canvas.height - paddleHeight) paddleLeft.y += speedPaddle * (0.2 + (0.1*scoreRight));
 
       // Movimento bola
       ball.x += ball.vx;
